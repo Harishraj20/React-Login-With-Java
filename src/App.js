@@ -7,8 +7,11 @@ import Details from "./Components/Details";
 import PrivateRoutes from "./PrivateRoutes";
 import Logout from "./Components/Logout";
 
+
 function App() {
   return (
+    
+
     <BrowserRouter>
       <Routes>
         <Route path="/signup" element={<Signup />} />

@@ -5,7 +5,7 @@ import authContext from "../AuthContext/AuthContext";
 
 function Login() {
   const navigate = useNavigate();
-  const {setAuthStatus}  = useContext(authContext);
+  const { setAuthStatus } = useContext(authContext);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -19,14 +19,24 @@ function Login() {
   });
 
   useEffect(() => {
-    setTimeout(() => {
-      setMsg({
-        errorData: "",
-        emailError: "",
-        passwordError: "",
-      });
-    }, 10000);
-  }, [msg]);
+    if (
+      msg.errorData ||
+      msg.emailError ||
+      msg.passwordError ||
+      msg.successData
+    ) {
+      const timeout = setTimeout(() => {
+        setMsg({
+          errorData: "",
+          emailError: "",
+          passwordError: "",
+          successData: "",
+        });
+      }, 10000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [msg.errorData, msg.emailError, msg.passwordError, msg.successData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -81,14 +91,12 @@ function Login() {
       if (!response.ok) {
         throw new Error(data.msg);
       }
-      console.log(data);
 
       setMsg((prevState) => ({
         ...prevState,
         successData: "User LoggedIn successfully",
       }));
-      console.log("Going to navigate!....")
-      setAuthStatus(true)
+      setAuthStatus(true);
       navigate("/users/home");
     } catch (error) {
       setMsg((prevState) => ({
@@ -98,9 +106,6 @@ function Login() {
       setFormData({
         email: "",
         password: "",
-      });
-      setMsg({
-        errorData: "",
       });
     }
   };

@@ -84,12 +84,12 @@ function Signup() {
             console.log(data);
 
             if (!response.ok) {
-                throw new Error(data.message || "Failed to sign up!");
+                throw new Error(data.message);
             }
 
             setMsg((prevState) => ({
                 ...prevState,
-                successData: "User signed up successfully.",
+                successData: data.message,
                 errorData: "",
             }));
             setFormData({
@@ -100,7 +100,7 @@ function Signup() {
         } catch (error) {
             setMsg((prevState) => ({
                 ...prevState,
-                errorData: error.message || "An unexpected error occurred.",
+                errorData: error.message,
                 successData: "",
             }));
         }
